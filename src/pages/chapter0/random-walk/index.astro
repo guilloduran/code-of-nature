@@ -1,0 +1,20 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import CanvasContainer from '@/components/CanvasContainer.astro'
+import Title from '@/components/Title.astro'
+import SketchLoader from '@/components/SketchLoader.astro'
+import * as sketchModule from './sketch.ts'
+
+const sketchContent = sketchModule.default.toString()
+---
+
+<Layout title="Random Walk">
+  <div class="w-9/12 mx-auto">
+    <!-- Title -->
+    <Title text="Random Walk" />
+    <!-- Canvas container -->
+    <CanvasContainer />
+    <!-- Sketch Loader -->
+    <SketchLoader sketchContent={sketchContent} />
+  </div>
+</Layout>

@@ -1,0 +1,29 @@
+---
+export interface SketchComponentProps {
+  sketchContent: string
+}
+
+const { sketchContent } = Astro.props
+---
+
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"
+></script>
+
+<script define:vars={{ sketchContent }}>
+  const loadSketch = (content) => {
+    try {
+      const sketchFunction = new Function('return ' + content)()
+
+      const container = document.getElementById('sketch-container')
+      if (container) {
+        new p5(sketchFunction, container)
+      } else {
+        console.error('Sketch container not found')
+      }
+    } catch (error) {
+      console.error('Error loading sketch:', error)
+    }
+  }
+
+  loadSketch(sketchContent)
+</script>

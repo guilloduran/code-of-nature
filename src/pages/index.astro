@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { getChapterName, getTitleFromPath } from '../utils/sketchUtils'
+
+interface ChapterSketch {
+  title: string
+  path: string
+}
+
+interface SketchesByChapter {
+  [key: string]: ChapterSketch[]
+}
+
+const pages = await Astro.glob('/src/pages/**/*/index.astro')
+
+const sketchesByChapter = pages.reduce<SketchesByChapter>((acc, page) => {
+  const pathParts = page.file.split('/')
+
+  const chapterName = getChapterName(pathParts)
+  const title = getTitleFromPath(pathParts)
+
+  if (!acc[chapterName]) {
+    acc[chapterName] = []
+  }
+
+  acc[chapterName].push({
+    title: title,
+    path: page.url!,
+  })
+
+  return acc
+}, {})
+---
+
+<Layout title="Nature of Code Sketches">
+  <main class="max-w-4xl mx-auto p-6">
+    <h1 class="text-4xl font-bold mb-8 text-center">Nature of Code Sketches</h1>
+    {
+      Object.entries(sketchesByChapter).map(([chapter, sketches]) => (
+        <div class="mb-8">
+          <h2 class="text-2xl font-semibold mb-4">{chapter}</h2>
+          <ul class="space-y-2">
+            {sketches.map((sketch) => (
+              <li>
+                <a
+                  href={sketch.path}
+                  class="text-blue-400 hover:text-blue-300 transition-colors capitalize"
+                >
+                  {sketch.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </main>
+</Layout>

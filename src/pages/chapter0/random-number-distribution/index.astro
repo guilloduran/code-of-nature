@@ -1,0 +1,28 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import CanvasContainer from '@/components/CanvasContainer.astro'
+import Title from '@/components/Title.astro'
+import SketchLoader from '@/components/SketchLoader.astro'
+import * as sketchModule from './sketch.ts'
+
+const sketchContent = sketchModule.default.toString()
+---
+
+<Layout title="Random Number Distribution">
+  <div class="w-9/12 mx-auto">
+    <!-- Title -->
+    <Title text="Random Number Distribution" />
+    <!-- Canvas container -->
+    <CanvasContainer />
+    <!-- Numbers -->
+    <div class="flex w-[600px] mx-auto flex-row content-center justify-between">
+      {
+        Array.from({ length: 20 }, (_, index) => (
+          <p class="text-center text-sm mx-auto">{index}</p>
+        ))
+      }
+    </div>
+  </div>
+  <!-- Sketch Loader -->
+  <SketchLoader sketchContent={sketchContent} />
+</Layout>
